@@ -1,0 +1,77 @@
+<header>
+</header>
+
+<body>
+  <section>
+    <h1>IMC</h1>
+    <div class="input-section">
+      <label for="peso-input">
+        <input id="peso-input" type="text" placeholder="Peso (KG)"/>
+      </label>
+
+      <label for="altura-input">
+        <input id="altura-input" type="text" placeholder="Altura (M)"/>
+      </label>
+
+      <button type="button" id="calculate-result-btn">Calcular IMC</button>
+    </div>
+    <div id="calculate-result">
+      <p>O IMC desses dados é <span id="result-value">0</span>.</p>
+      <p>Este valor considera que você está na faixa <span id="result-grade">-</span>.</p>
+    </div>
+  </section>
+
+  <script>
+    var imc = 0
+    var imcResult = document.querySelector("#result-value")
+    var imcGrade = document.querySelector("#result-grade")
+
+
+    let btn = document.getElementById("calculate-result-btn");
+
+    btn.addEventListener('click', event => {
+      calculateIMC();
+    });
+
+    const resultGrades = [
+      { range: [16, 16.9], name: "Muito abaixo do peso"},
+      { range: [17, 18.4], name: "Abaixo do peso"},
+      { range: [18.5, 24.9], name: "Peso normal"},
+      { range: [25, 29.9], name: "Acima do peso"},
+      { range: [30, 34.9], name: "Obesidade grau I"},
+      { range: [35, 40], name: "Obesidade grau II"},
+      { range: [40], name: "Obesidade grau III"},
+    ]
+
+    function calculateGrade(imc) {
+      console.log({imc})
+      for (let grade of resultGrades) {
+        const {range, name} = grade
+        const [min, max] = range
+
+        if (!max && imc >= min) {
+          imcGrade.innerText = name
+          return
+        }
+
+        if (imc >= min && imc <= max) {
+          imcGrade.innerText = name
+          return
+        }
+      }
+    }
+
+    function calculateIMC() {
+      const peso = Number(document.querySelector("#peso-input").value)
+      const altura = Number(document.querySelector("#altura-input").value)
+
+      console.log({peso})
+      
+      imc = peso / (altura * altura)
+      imcResult.innerText = imc
+
+      calculateGrade(imc)
+    }
+
+  </script>
+</body>
